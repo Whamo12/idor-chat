@@ -83,6 +83,26 @@ createConnection().then(connection => {
     }
   });
   /**
+   * @description Get active users
+   * @param {Request} req
+   * @param {Response} res
+   * @returns active users
+   */
+  app.get('/users/active', async (req: Request, res: Response) => {
+    const activeUsers = await userRepository.find({ where: { active: true }, select: ['userName'] });
+    return res.status(200).json(activeUsers);
+  });
+  /**
+   * @description Get inactive users
+   * @param {Request} req
+   * @param {Response} res
+   * @returns active users
+   */
+  app.get('/users/inactive', async (req: Request, res: Response) => {
+    const inactiveUsers = await userRepository.find({ where: { active: false }, select: ['userName'] });
+    return res.status(200).json(inactiveUsers);
+  });
+  /**
    * @description Login to the application
    * @param {Request} req
    * @param {Response} res
