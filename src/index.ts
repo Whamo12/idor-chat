@@ -1,5 +1,6 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
+import * as path from 'path';
 import 'reflect-metadata';
 import { createConnection } from 'typeorm';
 import { User } from './entity/User';
@@ -10,10 +11,17 @@ import * as bcrypt from 'bcrypt';
 import { validate } from 'class-validator';
 const jwt = require('jsonwebtoken');
 const middleware = require('./token.middleware');
+const cors = require('cors');
 
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors());
+app.use(
+  express.static(path.join(__dirname, '../frontend/dist/frontend'), {
+    etag: false
+  })
+);
 // NODE ENV
 const env = process.env.NODE_ENV || 'dev';
 // start express server
