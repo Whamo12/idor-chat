@@ -50,7 +50,7 @@ createConnection().then(connection => {
     bcrypt.genSalt(saltRounds, async (err, salt) => {
       bcrypt.hash(password, salt, async (err, hash) => {
         user.password = hash;
-        user.active = false;
+        user.active = true;
         const errors = await validate(user);
         if (errors.length > 0) {
           return res.status(400).json('User validation failed');
@@ -103,7 +103,7 @@ createConnection().then(connection => {
             // TODO: Generate secret key and store in env var
             let token = jwt.sign(
               { email: user.userName, userId: user.id, active: user.active, title: user.title },
-              process.env.SALT,
+              process.env.JWT_KEY,
               { expiresIn: '1h' }
             );
             return res.status(200).json(token);
