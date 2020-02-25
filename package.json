@@ -28,7 +28,7 @@
     "nodemon:watch": "nodemon -e ts --exec \"npm run tsc\"",
     "ngServe": "cd frontend && ./node_modules/@angular/cli/bin/ng build && ./node_modules/@angular/cli/bin/ng serve",
     "postinstall": "cd frontend && npm install && cd .. && npm run build",
-    "build": "rm -rf build && tsc && cd frontend && npm run prodbuild"
+    "build": "rm -rf build && tsc && cd frontend && ./node_modules/@angular/cli/bin/ng build --aot --prod"
   },
   "keywords": [
     "web security",
