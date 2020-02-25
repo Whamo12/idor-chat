@@ -22,9 +22,18 @@ export class AppService {
       .get<User[]>(`${this.api}/users/inactive`)
       .pipe(catchError(err => of(null)));
   }
+  getUser(userId): Observable<User> {
+    return this.http.get<User>(`${this.api}/user/${userId}`);
+  }
   getMessages(): Observable<Message[]> {
     return this.http
       .get<Message[]>(`${this.api}/messages`)
       .pipe(catchError(err => of(null)));
+  }
+  submitMessage(msg) {
+    return this.http.post(`${this.api}/message/submit`, msg);
+  }
+  updateProfile(user) {
+    return this.http.patch(`${this.api}/user/update`, user);
   }
 }
