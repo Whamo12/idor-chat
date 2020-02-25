@@ -15,8 +15,8 @@ export class Message {
   lastUpdatedDate: Date;
 
   @Column()
-  createdBy: number;
+  createdBy: string;
 
   @Column()
-  lastUpdatedBy: number;
+  lastUpdatedBy: string;
 }

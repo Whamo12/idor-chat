@@ -1,7 +1,7 @@
 {
   "name": "idor-chat",
   "version": "0.0.1",
-  "description": "Awesome project developed with TypeORM.",
+  "description": "An insecure chat web application.",
   "devDependencies": {
     "ts-node": "3.3.0",
     "@types/node": "^8.0.29",
@@ -12,18 +12,23 @@
     "body-parser": "^1.19.0",
     "class-validator": "^0.11.0",
     "concurrently": "^5.1.0",
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "mysql": "^2.14.1",
+    "path": "^0.12.7",
     "reflect-metadata": "^0.1.10",
     "typeorm": "0.2.22"
   },
   "scripts": {
     "start": "node build/index.js",
-    "start:dev": "concurrently --kill-others \"npm run nodemon:watch\"",
-    "tsc": "rm -rf dist && tsc && npm start",
-    "nodemon:watch": "nodemon -e ts --exec \"npm run tsc\""
+    "start:dev": "concurrently --kill-others \"npm run nodemon:watch\" \"npm run ngServe\"",
+    "tsc": "rm -rf build && tsc && npm start",
+    "nodemon:watch": "nodemon -e ts --exec \"npm run tsc\"",
+    "ngServe": "cd frontend && ./node_modules/@angular/cli/bin/ng build && ./node_modules/@angular/cli/bin/ng serve",
+    "postinstall": "cd frontend && npm install && cd .. && npm run build",
+    "build": "rm -rf build && tsc && cd frontend && npm run prodbuild"
   },
   "keywords": [
     "web security",
@@ -35,5 +40,10 @@
     "security",
     "vulnerable",
     "vulnerability"
-  ]
+  ],
+  "nodemonConfig": {
+    "ignore": [
+      "frontend"
+    ]
+  }
 }

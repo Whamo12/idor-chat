@@ -1,0 +1,97 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <h3 class="text-center">Users</h3>
+      <p-dataView [value]="activeUsers">
+        <p-header>Active</p-header>
+        <ng-template let-user pTemplate="listItem">
+          <div style="color: green;">
+            {{ user.userName }}
+          </div>
+        </ng-template>
+      </p-dataView>
+      <br />
+      <p-dataView [value]="inactiveUsers">
+        <p-header>Inactive</p-header>
+        <ng-template let-user pTemplate="listItem">
+          <div style="color:gray">
+            {{ user.userName }}
+          </div>
+        </ng-template>
+      </p-dataView>
+    </div>
+    <div
+      class="col-6"
+      style="border-right: 1px solid #cecece;border-left: 1px solid #cecece;"
+    >
+      <h3 class="text-center">Chatroom</h3>
+      <div
+        class="container"
+        style="border:1px solid #cecece; padding: 50px; border-radius: 25px; height: 750px; overflow: scroll;"
+      >
+        <div *ngFor="let message of messages">
+          <span>
+            <p>
+              <strong>{{ message.createdBy }}</strong>
+              {{ message.lastUpdatedDate | date: "shortTime" }} :
+              {{ message.message }}
+            </p>
+            <div class="float-right"></div>
+          </span>
+        </div>
+      </div>
+      <br />
+      <div id="formContent">
+        <form [formGroup]="messageForm" (ngSubmit)="onSubmit(messageForm)">
+          <input
+            formControlName="msg"
+            type="text"
+            id="msg"
+            class="form-control col-10"
+            name="msg"
+            placeholder="Message chatroom"
+            style="margin-bottom: 5px; border-radius: 15px;"
+          />
+          <input
+            [disabled]="!messageForm.valid"
+            type="submit"
+            class="btn btn-success float-right"
+            value="Submit"
+          />
+        </form>
+      </div>
+    </div>
+    <div class="col">
+      <h3 class="text-center">Your Account</h3>
+      <h4 class="text-center">{{ user?.userName }}</h4>
+      <!-- Login Form -->
+      <form [formGroup]="userForm" (ngSubmit)="onSubmitUser(userForm)">
+        <input
+          formControlName="userName"
+          type="text"
+          id="userName"
+          class="form-control"
+          name="userName"
+          placeholder="Username"
+          style="margin-bottom: 5px;"
+          readonly
+        />
+        <input
+          formControlName="title"
+          type="text"
+          id="title"
+          class="form-control"
+          name="title"
+          placeholder="Title"
+          style="margin-bottom: 5px;"
+        />
+        <input
+          [disabled]="!userForm.valid"
+          type="submit"
+          class="btn btn-success float-right"
+          value="Update"
+        />
+      </form>
+    </div>
+  </div>
+</div>

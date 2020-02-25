@@ -1,0 +1,58 @@
+<div
+  class="container col-4"
+  style="border:1px solid #cecece; padding: 50px; border-radius: 25px;"
+>
+  <div id="formContent">
+    <!-- Login Form -->
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit(registerForm)">
+      <input
+        formControlName="userName"
+        type="text"
+        id="userName"
+        class="form-control"
+        name="userName"
+        placeholder="Username"
+        style="margin-bottom: 5px;"
+      />
+      <input
+        formControlName="title"
+        type="text"
+        id="title"
+        class="form-control"
+        name="title"
+        placeholder="Title"
+        style="margin-bottom: 5px;"
+      />
+      <input
+        formControlName="password"
+        type="password"
+        id="password"
+        class="form-control"
+        name="password"
+        placeholder="Password"
+        style="margin-bottom: 5px;"
+        pPassword
+      />
+      <input
+        formControlName="confirmPassword"
+        type="password"
+        id="confirmPassword"
+        class="form-control"
+        name="confirmPassword"
+        placeholder="Confirm Password"
+        style="margin-bottom: 5px;"
+      />
+      <input
+        [disabled]="!registerForm.valid"
+        type="submit"
+        class="btn btn-success float-right"
+        value="Register"
+      />
+    </form>
+    <div id="formFooter">
+      <div>
+        <a class="underlineHover" href="#/login">Back to login</a>
+      </div>
+    </div>
+  </div>
+</div>
