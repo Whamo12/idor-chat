@@ -1,7 +1,7 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { User } from "../user";
 import { Message } from "../message";
-import { interval } from "rxjs";
+import { interval, Subscription } from "rxjs";
 import { startWith, switchMap } from "rxjs/operators";
 import { AppService } from "../app.service";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
@@ -12,7 +12,7 @@ import { AuthService } from "../auth.service";
   templateUrl: "./dashboard.component.html",
   styleUrls: ["./dashboard.component.css"]
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
   messageForm: FormGroup;
   activeUsers: User[] = [];
   inactiveUsers: User[] = [];
@@ -20,7 +20,9 @@ export class DashboardComponent implements OnInit {
   userForm: FormGroup;
   userId: number;
   user: User;
-  test: any;
+  activeSub: Subscription;
+  inactiveSub: Subscription;
+  messageSub: Subscription;
   constructor(
     private appService: AppService,
     private fb: FormBuilder,
@@ -33,7 +35,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.getUser();
-    this.test = interval(1000)
+    this.activeSub = interval(5000)
       .pipe(
         startWith(0),
         switchMap(() => this.appService.getActiveUsers())
@@ -41,7 +43,7 @@ export class DashboardComponent implements OnInit {
       .subscribe(res => {
         this.activeUsers = res;
       });
-    interval(1000)
+    this.inactiveSub = interval(5000)
       .pipe(
         startWith(0),
         switchMap(() => this.appService.getInactiveUsers())
@@ -49,7 +51,7 @@ export class DashboardComponent implements OnInit {
       .subscribe(res => {
         this.inactiveUsers = res;
       });
-    interval(1000)
+    this.messageSub = interval(5000)
       .pipe(
         startWith(0),
         switchMap(() => this.appService.getMessages())
@@ -57,6 +59,12 @@ export class DashboardComponent implements OnInit {
       .subscribe(res => {
         this.messages = res;
       });
+  }
+
+  ngOnDestroy() {
+    this.activeSub.unsubscribe();
+    this.inactiveSub.unsubscribe();
+    this.messageSub.unsubscribe();
   }
 
   createForm() {
@@ -76,10 +84,11 @@ export class DashboardComponent implements OnInit {
   onSubmit(messageInput) {
     const messageObj = {
       msg: messageInput.value.msg,
-      userId: this.user.userId
+      userId: this.userId
     };
     this.appService.submitMessage(messageObj).subscribe(res => {
       this.messageForm.reset();
+      this.scroll("chatroom");
     });
   }
 
@@ -98,5 +107,10 @@ export class DashboardComponent implements OnInit {
     this.appService.updateProfile(userObj).subscribe(res => {
       this.getUser();
     });
+  }
+
+  scroll(id: string) {
+    const objDiv = document.getElementById(id);
+    objDiv.scrollTop = objDiv.scrollHeight;
   }
 }

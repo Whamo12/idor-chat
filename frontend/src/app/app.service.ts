@@ -30,8 +30,8 @@ export class AppService {
       .get<Message[]>(`${this.api}/messages`)
       .pipe(catchError(err => of(null)));
   }
-  submitMessage(msg) {
-    return this.http.post(`${this.api}/message/submit`, msg);
+  submitMessage(msgObj) {
+    return this.http.post(`${this.api}/message/submit`, msgObj);
   }
   updateProfile(user) {
     return this.http.patch(`${this.api}/user/update`, user);
