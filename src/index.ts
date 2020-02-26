@@ -22,6 +22,10 @@ app.use(
     etag: false
   })
 );
+// Catch all other routes and return the index file
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/dist/frontend/index.html'));
+});
 // NODE ENV
 const env = process.env.NODE_ENV || 'dev';
 // start express server
