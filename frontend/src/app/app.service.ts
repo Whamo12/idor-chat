@@ -11,7 +11,7 @@ import { catchError } from "rxjs/operators";
 })
 export class AppService {
   constructor(private http: HttpClient) {}
-  api = "http://localhost:5000";
+  api = environment.apiUrl;
   getActiveUsers(): Observable<User[]> {
     return this.http
       .get<User[]>(`${this.api}/users/active`)
