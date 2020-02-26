@@ -12,7 +12,6 @@ import { validate } from 'class-validator';
 const jwt = require('jsonwebtoken');
 const middleware = require('./token.middleware');
 const cors = require('cors');
-
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -22,10 +21,6 @@ app.use(
     etag: false
   })
 );
-// Catch all other routes and return the index file
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/dist/frontend/index.html'));
-});
 // NODE ENV
 const env = process.env.NODE_ENV || 'dev';
 // start express server
@@ -34,11 +29,11 @@ var server_ip_address = process.env.IP || '127.0.0.1';
 app.set('port', server_port);
 app.set('server_ip_address', server_ip_address);
 app.listen(server_port, () => console.log(`Server running on ${server_ip_address}:${server_port}`));
-//Health check
-app.get('/ping', (req: Request, res: Response) => {
-  res.status(200).json('pong');
-});
 createConnection().then(connection => {
+  //Health check
+  app.get('/ping', (req: Request, res: Response) => {
+    res.status(200).json('pong');
+  });
   // register respositories for database communication
   const userRepository = connection.getRepository(User);
   const messageRepository = connection.getRepository(Message);
