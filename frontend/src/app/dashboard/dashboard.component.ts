@@ -35,7 +35,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getUser();
-    this.activeSub = interval(5000)
+    this.activeSub = interval(2500)
       .pipe(
         startWith(0),
         switchMap(() => this.appService.getActiveUsers())
@@ -43,7 +43,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         this.activeUsers = res;
       });
-    this.inactiveSub = interval(5000)
+    this.inactiveSub = interval(2500)
       .pipe(
         startWith(0),
         switchMap(() => this.appService.getInactiveUsers())
@@ -51,7 +51,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         this.inactiveUsers = res;
       });
-    this.messageSub = interval(5000)
+    this.messageSub = interval(2500)
       .pipe(
         startWith(0),
         switchMap(() => this.appService.getMessages())
