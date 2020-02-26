@@ -24,11 +24,10 @@
   "scripts": {
     "start": "node build/index.js",
     "start:dev": "concurrently --kill-others \"npm run nodemon:watch\" \"npm run ngServe\"",
-    "tsc": "rm -rf build && tsc && npm start",
     "nodemon:watch": "nodemon -e ts --exec \"npm run tsc\"",
     "ngServe": "cd frontend && ./node_modules/@angular/cli/bin/ng build && ./node_modules/@angular/cli/bin/ng serve",
     "postinstall": "cd frontend && npm install",
-    "build": "rm -rf build && tsc && cd frontend && ./node_modules/@angular/cli/bin/ng build --aot --prod"
+    "build": "rm -rf build && tsc && cd frontend && rm -rf dist && ./node_modules/@angular/cli/bin/ng build --aot --prod"
   },
   "keywords": [
     "web security",
