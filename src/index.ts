@@ -31,7 +31,7 @@ app.set('server_ip_address', server_ip_address);
 app.listen(server_port, () => console.log(`Server running on ${server_ip_address}:${server_port}`));
 createConnection().then(connection => {
   //Health check
-  app.get('/ping', (req: Request, res: Response) => {
+  app.get('/api/ping', (req: Request, res: Response) => {
     res.status(200).json('pong');
   });
   // register respositories for database communication
