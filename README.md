@@ -6,7 +6,7 @@ This purpose of this project is to be a simple, easily deployable, insecure web 
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
-## Live [Demo](https://idor-chat.herokuapp.com/)
+## Live <a target="_blank" href="https://github.com/Whamo12/idor-chat/blob/master/README.md">Demo</a>
 
 Feel free to utilize the demo application.  Just know that the application will reset every hour.
 
