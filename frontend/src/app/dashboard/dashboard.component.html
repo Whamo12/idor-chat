@@ -35,7 +35,7 @@
         <div *ngFor="let message of messages">
           <span>
             <p>
-              <strong>{{ message.createdBy }}</strong>
+              <strong>{{ message.lastUpdatedBy }}</strong>
               {{ message.lastUpdatedDate | date: "shortTime" }} :
               {{ message.message }}
               <button

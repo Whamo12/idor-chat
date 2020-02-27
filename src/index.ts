@@ -111,7 +111,7 @@ createConnection()
      */
     app.get('/user/:userId', middleware.checkToken, async (req: Request, res: Response) => {
       if (!req.params.userId) return res.status(400).json('Invalid user ID');
-      let user = await userRepository.findOne(req.params.userId);
+      let user = await userRepository.findOne(req.params.userId, { select: ['userName', 'title'] });
       return res.status(200).json(user);
     });
     /**
@@ -128,9 +128,9 @@ createConnection()
           userName
         })
         .getOne();
-      user.active = true;
-      await userRepository.save(user);
       if (user) {
+        user.active = true;
+        await userRepository.save(user);
         bcrypt.compare(password, user.password, (err, valid) => {
           if (valid) {
             // TODO: Generate secret key and store in env var
@@ -193,11 +193,14 @@ createConnection()
     app.patch('/message/update/:msgId', middleware.checkToken, async (req: Request, res: Response) => {
       const msgId = req.params.msgId;
       const { msg, userId } = req.body;
+      if (!userId) return res.status(400).json('User ID is invalid');
+      const user = await userRepository.findOne(userId);
+      if (!user) res.status(404).json('User does not exist');
       if (!msgId) return res.status(400).json('Message ID is invalid');
       let message = await messageRepository.findOne(msgId);
       if (message) {
         message.message = msg;
-        message.lastUpdatedBy = userId;
+        message.lastUpdatedBy = user.userName;
         const errors = await validate(message);
         if (errors.length > 0) {
           return res.status(400).send('Message validation failed');
