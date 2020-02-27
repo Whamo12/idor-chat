@@ -158,9 +158,12 @@ createConnection()
       const { userId } = req.body;
       if (!userId) return res.status(400).json('Unable to log off.  Please contact a system administrator.');
       let user = await userRepository.findOne(userId);
-      user.active = false;
-      await userRepository.save(user);
-      return res.status(200).json('Successfully logged off');
+      if (user) {
+        user.active = false;
+        await userRepository.save(user);
+      } else {
+        return res.status(404).json('Logoff failed.  User does not exist');
+      }
     });
     /**
      * @description Submit a message
