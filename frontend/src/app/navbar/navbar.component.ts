@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { AuthService } from "../auth.service";
 import { GlobalManagerService } from "../global-manager.service";
-import { Router } from "@angular/router";
 
 @Component({
   selector: "app-navbar",
@@ -13,23 +12,12 @@ export class NavbarComponent implements OnInit {
 
   constructor(
     public authService: AuthService,
-    private globalManager: GlobalManagerService,
-    private router: Router
+    private globalManager: GlobalManagerService
   ) {}
 
   ngOnInit(): void {}
 
   logout() {
-    this.router.navigate(["login"]);
-
-    this.authService
-      .logout()
-      .toPromise()
-      .then(_ => {
-        this.router.navigate(["login"]);
-      })
-      .then(_ => {
-        localStorage.removeItem("AUTH_TOKEN");
-      });
+    this.authService.logout();
   }
 }

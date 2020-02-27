@@ -2,12 +2,13 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../environments/environment";
 import { User } from "./user";
+import { Router } from "@angular/router";
 
 @Injectable({
   providedIn: "root"
 })
 export class AuthService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
   api = environment.apiUrl;
   isLoggedIn = false;
   loggedInUser: User;
@@ -21,7 +22,12 @@ export class AuthService {
   }
 
   logout() {
-    return this.http.patch(`${this.api}/logout`, this.loggedInUser);
+    return this.http
+      .patch(`${this.api}/logout`, this.loggedInUser)
+      .subscribe(() => {
+        this.removeToken();
+        this.router.navigate(["login"]);
+      });
   }
 
   removeToken() {
