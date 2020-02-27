@@ -2,6 +2,7 @@
   <div class="row">
     <div class="col">
       <h3 class="text-center">Users</h3>
+      <br />
       <p-dataView [value]="activeUsers">
         <p-header>Active</p-header>
         <ng-template let-user pTemplate="listItem">
@@ -25,6 +26,7 @@
       style="border-right: 1px solid #cecece;border-left: 1px solid #cecece;"
     >
       <h3 class="text-center">Chatroom</h3>
+      <br />
       <div
         id="chatroom"
         class="container"
@@ -36,8 +38,25 @@
               <strong>{{ message.createdBy }}</strong>
               {{ message.lastUpdatedDate | date: "shortTime" }} :
               {{ message.message }}
+              <button
+                *ngIf="belongsToUser(message)"
+                (click)="deleteMessageById(message)"
+                class=" btn float-right"
+                type="button"
+              >
+                <fa-icon [icon]="faTrash"></fa-icon>
+              </button>
+              <button
+                (click)="updateMessageById(message)"
+                *ngIf="belongsToUser(message)"
+                class="btn float-right"
+                type="button"
+                style="margin-right: 10px;"
+              >
+                <fa-icon [icon]="faPencilAlt"></fa-icon>
+              </button>
             </p>
-            <div class="float-right"></div>
+            <hr />
           </span>
         </div>
       </div>
@@ -64,7 +83,7 @@
     </div>
     <div class="col">
       <h3 class="text-center">Your Account</h3>
-      <h4 class="text-center">{{ user?.userName }}</h4>
+      <br />
       <!-- Login Form -->
       <form [formGroup]="userForm" (ngSubmit)="onSubmitUser(userForm)">
         <input

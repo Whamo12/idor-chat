@@ -33,6 +33,12 @@ export class AppService {
   submitMessage(msgObj) {
     return this.http.post(`${this.api}/message/submit`, msgObj);
   }
+  deleteMessage(msgId) {
+    return this.http.delete(`${this.api}/message/delete/${msgId}`);
+  }
+  updateMessage(msgId: number, msgObj) {
+    return this.http.patch(`${this.api}/message/update/${msgId}`, msgObj);
+  }
   updateProfile(user) {
     return this.http.patch(`${this.api}/user/update`, user);
   }

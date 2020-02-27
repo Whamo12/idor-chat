@@ -6,6 +6,8 @@ import { startWith, switchMap } from "rxjs/operators";
 import { AppService } from "../app.service";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { AuthService } from "../auth.service";
+import { faPencilAlt } from "@fortawesome/free-solid-svg-icons";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 @Component({
   selector: "app-dashboard",
@@ -13,6 +15,8 @@ import { AuthService } from "../auth.service";
   styleUrls: ["./dashboard.component.css"]
 })
 export class DashboardComponent implements OnInit, OnDestroy {
+  faPencilAlt = faPencilAlt;
+  faTrash = faTrash;
   messageForm: FormGroup;
   activeUsers: User[] = [];
   inactiveUsers: User[] = [];
@@ -23,6 +27,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   activeSub: Subscription;
   inactiveSub: Subscription;
   messageSub: Subscription;
+  isMsgUpdate = false;
+  tempMsgId: number;
   constructor(
     private appService: AppService,
     private fb: FormBuilder,
@@ -35,7 +41,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getUser();
-    this.activeSub = interval(2500)
+    this.activeSub = interval(1500)
       .pipe(
         startWith(0),
         switchMap(() => this.appService.getActiveUsers())
@@ -43,7 +49,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         this.activeUsers = res;
       });
-    this.inactiveSub = interval(2500)
+    this.inactiveSub = interval(1500)
       .pipe(
         startWith(0),
         switchMap(() => this.appService.getInactiveUsers())
@@ -51,7 +57,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         this.inactiveUsers = res;
       });
-    this.messageSub = interval(2500)
+    this.messageSub = interval(1500)
       .pipe(
         startWith(0),
         switchMap(() => this.appService.getMessages())
@@ -81,17 +87,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     });
   }
 
-  onSubmit(messageInput) {
-    const messageObj = {
-      msg: messageInput.value.msg,
-      userId: this.userId
-    };
-    this.appService.submitMessage(messageObj).subscribe(res => {
-      this.messageForm.reset();
-      this.scroll("chatroom");
-    });
-  }
-
   getUser() {
     this.appService.getUser(this.userId).subscribe(res => {
       this.user = res;
@@ -112,5 +107,43 @@ export class DashboardComponent implements OnInit, OnDestroy {
   scroll(id: string) {
     const objDiv = document.getElementById(id);
     objDiv.scrollTop = objDiv.scrollHeight;
+  }
+
+  onSubmit(messageInput) {
+    const messageObj = {
+      msg: messageInput.value.msg,
+      userId: this.userId
+    };
+    if (!this.isMsgUpdate) {
+      this.appService.submitMessage(messageObj).subscribe(res => {
+        this.messageForm.reset();
+        this.scroll("chatroom");
+      });
+    } else {
+      this.appService.updateMessage(this.tempMsgId, messageObj).subscribe(_ => {
+        this.isMsgUpdate = false;
+        this.messageForm.reset();
+      });
+    }
+  }
+
+  deleteMessageById(message) {
+    let r = confirm(`Delete message? "${message.message}"`);
+    if (r == true) {
+      this.appService.deleteMessage(message.id).subscribe();
+    }
+  }
+
+  updateMessageById(message) {
+    const tempMsgFormObj = { msg: message.message };
+    this.tempMsgId = message.id;
+    this.messageForm.patchValue(tempMsgFormObj);
+    this.isMsgUpdate = true;
+  }
+
+  belongsToUser(message) {
+    if (this.user) {
+      return message.createdBy === this.user.userName;
+    }
   }
 }

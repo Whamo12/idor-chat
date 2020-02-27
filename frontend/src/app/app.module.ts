@@ -11,6 +11,7 @@ import { LoginComponent } from "./login/login.component";
 import { RegisterComponent } from "./register/register.component";
 import { NavbarComponent } from "./navbar/navbar.component";
 import { AppInterceptor } from "./app.interceptor";
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { AppInterceptor } from "./app.interceptor";
     HttpClientModule,
     DataViewModule,
     ReactiveFormsModule,
-    PasswordModule
+    PasswordModule,
+    FontAwesomeModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AppInterceptor, multi: true }
