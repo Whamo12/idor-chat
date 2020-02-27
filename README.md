@@ -41,4 +41,4 @@ Add additional notes about how to deploy this on a live system
 * [Express](https://expressjs.com/) - A minimal and flexible Node.js web application framework 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 ## License
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/Whamo12/idor-chat/blob/master/LICENSE) file for details
