@@ -33,8 +33,6 @@ DB_PORT=
 DB_NAME=
 JWT_KEY=
 ```
-## Deployment
-Add additional notes about how to deploy this on a live system
 ## Built With
 * [Typeorm](https://typeorm.io/#/) - The ORM used
 * [Angular](https://angular.io/) - The Angular Framework
